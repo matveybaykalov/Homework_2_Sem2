@@ -14,16 +14,33 @@ bool comp(std::pair<int, int>& a){
 }
 
 int main() {
-    Map<int, int, comparator> myMap1;
+    Map<int, int> myMap1, myMap2;
     myMap1.insert({1, 10});
-    myMap1.insert({3, 30});
+    myMap2.insert({3, 30});
     myMap1.insert({2, 20});
     myMap1.insert({4, 40});
-    myMap1.insert({0, 0});
-    myMap1.insert({5, 50});
+    myMap1.insert({5, 55});
+    myMap2.insert({0, 0});
+    myMap2.insert({5, 50});
     myMap1.insert({8, 80});
-    myMap1.insert({6, 60});
+    myMap2.insert({6, 60});
     myMap1.insert({7, 70});
+    std::for_each(myMap1.rbegin(), myMap1.rend(), print);
+    std::cout << '\n';
+    std::for_each(myMap1.begin(), myMap1.end(), print);
+    std::cout << '\n';
+    std::for_each(myMap2.begin(), myMap2.end(), print);
+    std::cout << '\n';
+    myMap1.merge(myMap2);
+    std::for_each(myMap1.begin(), myMap1.end(), print);
+    std::cout << '\n';
+    myMap1[3] = 35;
+    std::for_each(myMap1.begin(), myMap1.end(), print);
+    std::cout << '\n';
+    myMap1[10] = 100;
+    std::for_each(myMap1.begin(), myMap1.end(), print);
+    std::cout << '\n';
+    print(*myMap1.erase(3));
     for(auto i : myMap1){
         std::cout << '{' << i.first << " : " << i.second << '}' << '\n';
     }

@@ -9,15 +9,15 @@
 
 template<typename Key, typename Value>
 class MapIterator{
-    std::pair<Key, Value>* _pos;
 public:
+    std::pair<Key, Value>* _pos;
     using iterator_category = std::bidirectional_iterator_tag;
     using pointer = std::pair<Key, Value>*;
     using reference = std::pair<Key, Value>&;
 
     MapIterator(std::pair<Key, Value>* _pos): _pos(_pos){}
 
-    bool operator==(MapIterator<Key, Value> other){
+    bool operator==(const MapIterator<Key, Value>& other){
         return _pos == other._pos;
     }
 
@@ -38,7 +38,7 @@ public:
         return *this;
     }
 
-    MapIterator operator++(int){
+    MapIterator& operator++(int){
         MapIterator temp = *this;
         ++_pos;
         return temp;
@@ -49,7 +49,7 @@ public:
         return *this;
     }
 
-    MapIterator operator--(int){
+    MapIterator& operator--(int){
         MapIterator temp = *this;
         --_pos;
         return temp;
@@ -66,7 +66,7 @@ public:
 
     const_MapIterator(std::pair<Key, Value>* _pos): _pos(_pos){}
 
-    bool operator==(const_MapIterator<Key, Value>& other) const{
+    bool operator==(const const_MapIterator<Key, Value>& other) const{
         return _pos == other._pos;
     }
 
@@ -93,11 +93,11 @@ public:
 
     revers_MapIterator(std::pair<Key, Value>* _pos): _pos(_pos){}
 
-    bool operator==(revers_MapIterator<Key, Value>& other){
+    bool operator==(const revers_MapIterator<Key, Value>& other){
         return _pos == other._pos;
     }
 
-    bool operator!=(revers_MapIterator<Key, Value>& other){
+    bool operator!=(const revers_MapIterator<Key, Value>& other){
         return _pos != other._pos;
     }
 
@@ -142,7 +142,7 @@ public:
 
     const_revers_MapIterator(std::pair<Key, Value>* _pos): _pos(_pos){}
 
-    bool operator==(const_revers_MapIterator<Key, Value>& other) const{
+    bool operator==(const const_revers_MapIterator<Key, Value>& other) const{
         return _pos == other._pos;
     }
 
@@ -172,20 +172,20 @@ public:
     }
     Map(){
         _size = 0;
-        _capacity = 1;
-        _data = new std::pair<Key, Value>[_capacity]; //выделяю память под элемент стоящий за последним
+        _capacity = 0;
+        _data = new std::pair<Key, Value>[_capacity + 2]; //выделяю память под 2 элемента стоящий за последним и перед первым (для реверс итераторов)
     }
     MapIterator<Key, Value> begin(){
-        return MapIterator(&_data[0]);
+        return MapIterator(&_data[1]);
     }
     MapIterator<Key, Value> end(){
-        return MapIterator(&_data[_size]);
+        return MapIterator(&_data[_size+1]);
     }
     const_MapIterator<Key, Value> cbegin(){
-        return const_MapIterator(&_data[0]);
+        return const_MapIterator(&_data[1]);
     }
     const_MapIterator<Key, Value> cend(){
-        return const_MapIterator(&_data[_size]);
+        return const_MapIterator(&_data[_size+1]);
     }
     revers_MapIterator<Key, Value> rbegin(){
         return revers_MapIterator(&_data[_size]);
@@ -204,16 +204,12 @@ public:
     MapIterator<Key, Value> erase(MapIterator<Key, Value> first, MapIterator<Key, Value> last);
     MapIterator<Key, Value> erase(const Key& key);
     std::pair<Key, Value> extract(const Key& key);
-    std::pair<Key, Value> extract(MapIterator<Key, Value> node){// тут использую функционал ранее реализованной функции,
-        return extract((*node).first);                  //передав в качестве аргумента ключ из разыменованного итератора
-    }
+    std::pair<Key, Value> extract(MapIterator<Key, Value> node);
     void merge(Map& other);
     int count(const Key& key);
     MapIterator<Key, Value> find(const Key& key);
     Value& at(const Key& key);
-    std::pair<Key, Value>& operator[](int n){
-        return _data[n];
-    }
+    Value& operator[](const Key& key);
     bool empty(){
         return _size == 0;
     }
@@ -223,8 +219,8 @@ public:
     void clear(){
         delete _data; //удаляю предыдущие данные и инициализирую поля теми  же значениями, которые задаю при создании контейнера
         _size = 0;
-        _capacity = 1;
-        _data = new std::pair<Key, Value>[_capacity];
+        _capacity = 0;
+        _data = new std::pair<Key, Value>[_capacity+2];
     }
     void swap(Map& other){ //в этой функции решил использовать функционал оператора присваивания
         Map temp = *this;
