@@ -5,7 +5,7 @@
 #include "Map.h"
 #include <map>
 
-void print(std::pair<int, int>& it){
+void print(const std::pair<int, int>& it){
     std::cout << "{key : " << it.first << ", value : " << it.second << "}\n";
 }
 
@@ -25,6 +25,9 @@ int main() {
     myMap1.insert({8, 80});
     myMap2.insert({6, 60});
     myMap1.insert({7, 70});
+    std::for_each(myMap1.cbegin(), myMap1.cend(), print); //добавил работу с константными итераторами
+    std::cout << '\n';
+    //(*myMap1.cbegin()).second = 123; //на этой строке рушится компилятор, что подтверждает константность значения
     std::for_each(myMap1.rbegin(), myMap1.rend(), print);
     std::cout << '\n';
     std::for_each(myMap1.begin(), myMap1.end(), print);

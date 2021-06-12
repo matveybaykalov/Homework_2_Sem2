@@ -64,7 +64,7 @@ public:
     using pointer = const std::pair<Key, Value>*;
     using reference = const std::pair<Key, Value>&;
 
-    const_MapIterator(std::pair<Key, Value>* _pos): _pos(_pos){}
+    const_MapIterator(const std::pair<Key, Value>* _pos): _pos(_pos){}
 
     bool operator==(const const_MapIterator<Key, Value>& other) const{
         return _pos == other._pos;
@@ -80,6 +80,27 @@ public:
 
     pointer operator->() const{
         return _pos;
+    }
+    const_MapIterator& operator++(){
+        ++_pos;
+        return *this;
+    }
+
+    const_MapIterator& operator++(int){
+        MapIterator temp = *this;
+        ++_pos;
+        return temp;
+    }
+
+    const_MapIterator& operator--(){
+        --_pos;
+        return *this;
+    }
+
+    const_MapIterator& operator--(int){
+        MapIterator temp = *this;
+        --_pos;
+        return temp;
     }
 };
 
@@ -114,7 +135,7 @@ public:
         return *this;
     }
 
-    revers_MapIterator operator++(int){
+    revers_MapIterator& operator++(int){
         MapIterator temp = *this;
         --_pos;
         return temp;
@@ -125,7 +146,7 @@ public:
         return *this;
     }
 
-    revers_MapIterator operator--(int){
+    revers_MapIterator& operator--(int){
         MapIterator temp = *this;
         ++_pos;
         return temp;
@@ -140,7 +161,7 @@ public:
     using pointer = const std::pair<Key, Value>*;
     using reference = const std::pair<Key, Value>&;
 
-    const_revers_MapIterator(std::pair<Key, Value>* _pos): _pos(_pos){}
+    const_revers_MapIterator(const std::pair<Key, Value>* _pos): _pos(_pos){}
 
     bool operator==(const const_revers_MapIterator<Key, Value>& other) const{
         return _pos == other._pos;
@@ -156,6 +177,27 @@ public:
 
     pointer operator->() const{
         return _pos;
+    }
+    const_revers_MapIterator& operator++(){
+        --_pos;
+        return *this;
+    }
+
+    const_revers_MapIterator& operator++(int){
+        MapIterator temp = *this;
+        --_pos;
+        return temp;
+    }
+
+    const_revers_MapIterator& operator--(){
+        ++_pos;
+        return *this;
+    }
+
+    const_revers_MapIterator& operator--(int){
+        MapIterator temp = *this;
+        ++_pos;
+        return temp;
     }
 };
 
@@ -210,6 +252,9 @@ public:
     MapIterator<Key, Value> find(const Key& key);
     Value& at(const Key& key);
     Value& operator[](const Key& key);
+    int capacity(){
+        return _capacity;
+    }
     bool empty(){
         return _size == 0;
     }
