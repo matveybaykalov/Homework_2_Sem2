@@ -210,7 +210,7 @@ public:
     Map(const Map& other);
     Map& operator= (const Map& other);
     ~Map(){
-        delete _data;
+        delete [] _data;
     }
     Map(){
         _size = 0;
@@ -262,7 +262,7 @@ public:
         return _size;
     }
     void clear(){
-        delete _data; //удаляю предыдущие данные и инициализирую поля теми  же значениями, которые задаю при создании контейнера
+        delete [] _data; //удаляю предыдущие данные и инициализирую поля теми  же значениями, которые задаю при создании контейнера
         _size = 0;
         _capacity = 0;
         _data = new std::pair<Key, Value>[_capacity+2];

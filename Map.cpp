@@ -105,7 +105,7 @@ template<typename Key, typename Value, class comparator>
 int Map<Key, Value, comparator>::count(const Key &key) {
     int pos = 0;
     int h = std::floor(_size/2);
-    h = static_cast<int>(pow(2, h));
+    h = 1 << h;
     while (h > 0){
         if(pos + h >= _size){
             h /= 2;
@@ -128,7 +128,7 @@ template<typename Key, typename Value, class comparator>
 MapIterator<Key, Value> Map<Key, Value, comparator>::find(const Key &key) {
     int pos = 0;
     int h = std::floor(_size/2);
-    h = static_cast<int>(pow(2, h));
+    h = 1 << h;
     while (h > 0){
         if(pos + h >= _size){
             h /= 2;
@@ -151,7 +151,7 @@ template<typename Key, typename Value, class comparator>
 Value& Map<Key, Value, comparator>::at(const Key &key) {
     int pos = 0;
     int h = std::floor(_size/2);
-    h = static_cast<int>(pow(2, h));
+    h = 1 << h;
     while (h > 0){
         if(pos + h >= _size){
             h /= 2;
